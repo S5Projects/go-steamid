@@ -1,4 +1,4 @@
-module github.com/shellucas/go-steamid
+module github.com/S5Projects/go-steamid
 
 go 1.14
 
