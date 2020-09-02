@@ -13,7 +13,7 @@ import (
 	"github.com/shellucas/go-steamid/universe"
 )
 
-type steamID struct {
+type SteamID struct {
 	universe  universe.Universe
 	idType    steamIDType.Type
 	instance  instance.Instance
@@ -23,8 +23,8 @@ type steamID struct {
 // Source: https://developer.valvesoftware.com/wiki/SteamID
 
 // CreateSteamID creates a steamID object
-func CreateSteamID(input string) (steamID, error) {
-	s := steamID{
+func CreateSteamID(input string) (SteamID, error) {
+	s := SteamID{
 		universe:  universe.INVALID,
 		idType:    steamIDType.INVALID,
 		instance:  instance.ALL,
@@ -99,8 +99,8 @@ func CreateSteamID(input string) (steamID, error) {
 }
 
 // FromIndividualAccountID Create an individual SteamID in the public universe given an accountid
-func FromIndividualAccountID(accountid int) steamID {
-	var sid = steamID{
+func FromIndividualAccountID(accountid int) SteamID {
+	sid := SteamID{
 		universe:  universe.PUBLIC,
 		idType:    steamIDType.INDIVIDUAL,
 		instance:  instance.DESKTOP,
@@ -110,7 +110,7 @@ func FromIndividualAccountID(accountid int) steamID {
 }
 
 // IsValid Check whether this SteamID is valid (according to Steam's rules)
-func (sid steamID) IsValid() bool {
+func (sid SteamID) IsValid() bool {
 	if sid.idType <= steamIDType.INVALID || sid.idType > steamIDType.ANON_USER {
 		return false
 	}
@@ -135,17 +135,17 @@ func (sid steamID) IsValid() bool {
 }
 
 // IsGroupChat Check whether this chat SteamID is tied to a Steam group.
-func (sid steamID) IsGroupChat() bool {
+func (sid SteamID) IsGroupChat() bool {
 	return !!((sid.idType == steamIDType.CHAT) && (int(sid.instance)&int(chat.Clan)) > 0)
 }
 
 // IsLobby Check whether this chat SteamID is a Steam lobby.
-func (sid steamID) IsLobby() bool {
+func (sid SteamID) IsLobby() bool {
 	return !!((sid.idType == steamIDType.CHAT) && (int(sid.instance)&int(chat.Lobby) > 0 || (int(sid.instance)&int(chat.MMSLobby)) > 0))
 }
 
 // Steam2 Render this SteamID into Steam2 textual format
-func (sid steamID) Steam2(newerFormat ...bool) string {
+func (sid SteamID) Steam2(newerFormat ...bool) string {
 	var newFormat bool
 	if len(newerFormat) > 0 {
 		newFormat = newerFormat[0]
@@ -169,7 +169,7 @@ func (sid steamID) Steam2(newerFormat ...bool) string {
 }
 
 // GetSteam2RenderedID Render this SteamID into Steam2 textual format
-func (sid steamID) GetSteam2RenderedID(newerFormat ...bool) string {
+func (sid SteamID) GetSteam2RenderedID(newerFormat ...bool) string {
 	if len(newerFormat) > 0 {
 		return sid.Steam2(newerFormat[0])
 	} else {
@@ -178,7 +178,7 @@ func (sid steamID) GetSteam2RenderedID(newerFormat ...bool) string {
 }
 
 // Steam3 Render this SteamID into Steam3 textual format
-func (sid steamID) Steam3() string {
+func (sid SteamID) Steam3() string {
 	Y := sid.accountid & 1
 	Z := int(math.Floor(float64(sid.accountid) / 2))
 	W := Z*2 + Y
@@ -186,12 +186,12 @@ func (sid steamID) Steam3() string {
 }
 
 // GetSteam3RenderedID Render this SteamID into Steam3 textual format
-func (sid steamID) GetSteam3RenderedID() string {
+func (sid SteamID) GetSteam3RenderedID() string {
 	return sid.Steam3()
 }
 
 // ToString Render this SteamID into 64-bit numeric format
-func (sid steamID) ToString() string {
+func (sid SteamID) ToString() string {
 	Z := sid.accountid
 	Instance := (int(sid.instance) << 32)
 	Type := (int(sid.idType) << 52)
@@ -201,6 +201,6 @@ func (sid steamID) ToString() string {
 }
 
 // GetSteamID64 Render this SteamID into 64-bit numeric format
-func (sid steamID) GetSteamID64() string {
+func (sid SteamID) GetSteamID64() string {
 	return sid.ToString()
 }
