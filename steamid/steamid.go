@@ -23,8 +23,8 @@ type SteamID struct {
 // Source: https://developer.valvesoftware.com/wiki/SteamID
 
 // CreateSteamID creates a steamID object
-func CreateSteamID(input string) (SteamID, error) {
-	s := SteamID{
+func CreateSteamID(input string) (*SteamID, error) {
+	s := &SteamID{
 		universe:  universe.INVALID,
 		idType:    steamIDType.INVALID,
 		instance:  instance.ALL,
@@ -99,8 +99,8 @@ func CreateSteamID(input string) (SteamID, error) {
 }
 
 // FromIndividualAccountID Create an individual SteamID in the public universe given an accountid
-func FromIndividualAccountID(accountid int) SteamID {
-	sid := SteamID{
+func FromIndividualAccountID(accountid int) *SteamID {
+	sid := &SteamID{
 		universe:  universe.PUBLIC,
 		idType:    steamIDType.INDIVIDUAL,
 		instance:  instance.DESKTOP,
